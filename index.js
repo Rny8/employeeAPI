@@ -57,20 +57,20 @@ app.get("/api/shifts", (req, res) => {
     res.status(200).send(shifts)
 });
 
-app.post("/api/shiftAdd/:id/:startTime/:endTime", (req, res) => {
+app.post("/api/shiftAdd", (req, res) => {
     const employee = employees.find(c => c.id == parseInt(req.params.id))
     if (!employee) {res.status(404).send("Unable to find employee by ID")}
     const shift = {
         shiftID: shifts.length + 1,
         employee,
-        startTime: req.params.startTime,
-        endTime: req.params.endTime
+        startTime: req.body.startTime,
+        endTime: req.body.endTime
     }
     shifts.push(shift)
     res.status(200).send(shift)
 });
 
-app.post("/api/shiftDelete/:id", (req, res) => {
+app.get("/api/shiftDelete/:id", (req, res) => {
     const shift = shifts.find(c => c.id == parseInt(req.params.id))
     for (let i = 0; i < employees.length; i++){
         if (shifts[i].shiftID === parseInt(req.params.id)) {
