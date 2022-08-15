@@ -23,19 +23,25 @@ app.post('/api/employeeAdd', (req, res) => {
         name: req.body.name,
         role: req.body.role
     };
+    if (req.params.name.trim() === "") {
+        res.status(400).send("Name cannot be blank")
+    };
+    if (req.params.role.trim() === "") {
+        res.status(400).send("Role cannot be blank")
+    };
     employees.push(employee);
     res.status(200).send(employee)
 });
 
 app.get("/api/employee/:id", (req, res) => {
     const employee = employees.find(c => c.id === parseInt(req.params.id));
-    if (!employee) res.status(404).send("Employee with given ID was not found")
+    if (!employee) res.status(400).send("Employee with given ID was not found")
     res.status(200).send(employee);
 });
 
-app.post("/api/employeeDelete/:id", (req, res) => {
+app.get("/api/employeeDelete/:id", (req, res) => {
     const employee = employees.find(c => c.id === parseInt(req.params.id));
-    if (!employee) res.status(404).send("Employee not found with given ID")
+    if (!employee) res.status(400).send("Employee not found with given ID")
     for (let i = 0; i < employees.length; i++){
         console.log(employees[i].id)
         if (employees[i].id === parseInt(req.params.id)) {
